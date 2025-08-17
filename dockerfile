@@ -11,10 +11,10 @@
     COPY requirements.txt .
     RUN pip install -r requirements.txt
     
-    # -------- dev --------
+# -------- dev --------
     FROM deps AS dev
-    # en dev montamos el código como volumen; solo dejamos deps dentro de la imagen
-    CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    ENV PYTHONPATH=/app/src
+    CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     
     # -------- prod --------
     FROM deps AS prod
