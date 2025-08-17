@@ -37,8 +37,9 @@ ipython_config.py
 # Editors
 *.swp
 .idea/
-.vscode/*
 *.code-workspace
+.vscode/
+vscode/
 
 # MyPy / Ruff / Pytype
 .mypy_cache/
