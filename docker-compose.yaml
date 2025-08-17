@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  # -------- DEV --------
+  api:
+    build:
+      context: .
+      target: dev             # stage "dev" en tu Dockerfile
+    container_name: fastapi-dev
+    environment:
+      PYTHONPATH: /app/src    # para que "app.*" sea importable
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0
+      --port 8080
+      --reload
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env.dev
+    volumes:
+      - ./src:/app/src:cached # hot-reload solo del código
+    healthcheck:
+      # Usamos Python estándar, no requiere curl/wget
+      test: >
+        CMD-SHELL python -c "import urllib.request, sys;
+        urllib.request.urlopen('http://127.0.0.1:8080/ping'); print('ok')"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  # -------- PROD --------
+  api-prod:
+    build:
+      context: .
+      target: prod
+    container_name: fastapi-prod
+    environment:
+      PYTHONPATH: /app/src
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0
+      --port 8080
+    ports:
+      - "8080:8000"
+    profiles: ["prod"]
+    restart: unless-stopped
