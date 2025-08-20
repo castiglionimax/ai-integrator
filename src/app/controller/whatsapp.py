@@ -2,14 +2,14 @@ from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 
 from app.handler.omnichannel.whatsapp import send_message
-from app.model import Message as domain_message
+from app.model import Message as domainMessage
 
 class Message(BaseModel):
     phone: str
     text: str
 
-def to_domain(payload: Message) -> domain_message:
-    return domain_message(phone=payload.phone, text=payload.text)
+def to_domain(payload: Message) -> domainMessage:
+    return domainMessage(phone=payload.phone, text=payload.text)
 
 
 

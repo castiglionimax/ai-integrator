@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
 @dataclass
-class Message():
+class Message:
     phone: str
     text: str
